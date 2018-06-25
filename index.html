@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name= viewport content= width=device-width initial-scale=1 keywords="restaurant, reviews, service worker, google maps">
+    <title>Restaurant Reviews</title>
+    <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
+    <link rel="stylesheet" href="css/styles.css">
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <h1><a href="/">Restaurant Reviews</a></h1>
+      </nav>
+    </header>
+
+    <main id="maincontent">
+      <label id="image-of-google-maps" class="off-screen">Google Maps</label>
+      <section id="map-container" role="application" aria-labelledby="image-of-google-maps">
+      <!--info located: https://stackoverflow.com/questions/44712753/what-is-a-suitable-wai-aria-role-attribute-for-a-map-element -->
+        <div id="map"></div>
+      </section>
+      <section>
+        <div class="filter-options">
+          <h2>Filter Results</h2>
+          <label for="neighborhoods-select" class="off-screen">
+            Filter by Neighborhood
+          </label>
+          <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
+            <option value="all">All Neighborhoods</option>
+          </select>
+          <label for="cuisines-select" class="off-screen">
+            Filter by Cuisines
+          </label>
+          <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
+            <option value="all">All Cuisines</option>
+          </select>
+        </div>
+        <label for="restaurants-list" class="off-screen">Resturant List</label>
+          <ul aria-labelledby="restaurants-list" id="restaurants-list" role="list"></ul>
+      </section>
+    </main>
+
+    <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
+    <script type='text/javascript' src='config.js'></script>
+    <script type="application/javascript" charset="utf-8" src="js/register_sw.js"></script>
+    <script async id="google-maps" defer></script>
+    <!--  added dynamically in main.js to protect API key-->
+    <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
+
+
+    <footer id="footer">
+      Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
+    </footer>
+  </body>
+</html>
