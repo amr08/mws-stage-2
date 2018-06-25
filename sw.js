@@ -1,4 +1,10 @@
-const STATIC_CACHE = 'mws-static-v3';
+const STATIC_CACHE_NAME = 'mws-static-v5';
+const CACHE_IMGS_NAME = 'restaurant-imgs';
+const allCaches = [
+  STATIC_CACHE_NAME,
+  CACHE_IMGS_NAME
+];
+
 const homeCacheUrls = [
   '/',
   '/index.html',
@@ -16,7 +22,7 @@ const restaurantPageCache = [
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(STATIC_CACHE).then(cache => (
+    caches.open(STATIC_CACHE_NAME).then(cache => (
       cache.addAll(homeCacheUrls)
     ))
   );
@@ -29,7 +35,7 @@ self.addEventListener('activate', event => {
       Promise.all(
         cacheNames.filter(cacheName => (
           cacheName.startsWith("mws-") &&
-           cacheName !== STATIC_CACHE
+           !allCaches.includes(cacheName)
         )).map(cacheName => (
           caches.delete(cacheName)
         ))
@@ -49,6 +55,11 @@ self.addEventListener('fetch', event => {
     // }
     if (requestUrl.pathname.startsWith('/restaurant')) {
       event.respondWith(serveRestaurantHtml(event.request));
+      return;
+    }
+
+    if (requestUrl.pathname.startsWith('/img/')) {
+      event.respondWith(servePhotos(event.request));
       return;
     }
   }
@@ -78,6 +89,42 @@ function serveRestaurantHtml(request) {
     });
   });
 }
+
+function servePhotos(request) {
+  const storageUrl = request.url.replace(/-\d+px\.jpg$/, '');
+
+  return caches.open(CACHE_IMGS_NAME).then(cache => {
+    return cache.match(storageUrl).then(response => {
+      // if(response) return response; 
+      
+      //TODO: Works only if imgs cached first. 
+      if(response.status === 404) {
+        return fetch(`img/10.jpg`);
+      } else if (response){
+        return response;
+      }
+      
+      // } return response;
+      // console.log(response)
+      // If an image doesn't show up, put in placeholder
+      // if(response.status === 404) {
+      //   console.log(response.status)
+      //   return fetch(`img/10.jpg`);
+      // } else {
+      //   return response;
+      // }
+     
+
+      return fetch(request).then(networkResponse => {
+        cache.put(storageUrl, networkResponse.clone());
+        return networkResponse;
+      })
+    }).catch(error => {
+      console.log("Error in servePhotos", error)
+    })
+  });
+}
+
 
 self.addEventListener('message', event => {
   if (event.data.update) {

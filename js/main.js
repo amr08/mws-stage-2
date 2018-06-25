@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
  */
 fetchNeighborhoods = () => {
   DBHelper.fetchNeighborhoods((error, neighborhoods) => {
-    if (error) { // Got an error
+    if (error) { 
       console.error(error);
     } else {
       self.neighborhoods = neighborhoods;
