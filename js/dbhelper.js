@@ -31,12 +31,13 @@ class DBHelper {
         error => console.log("An error has occured.", error)
       ).then(data => {
         let restaurants = data;
-        callback(null, restaurants);
         sendToDb(restaurants)
-        console.log(restaurants);
       }).catch(err => {
         console.log("error", err)
         callback(err, null)
+        if(dbPromise) {
+          readDb();
+        }
       });
 
     const sendToDb = (restaurants) => {
@@ -50,6 +51,18 @@ class DBHelper {
         return tx.complete;
       }).then(() => {
         console.log("added");
+        readDb();
+      });
+    }
+
+    const readDb = () => {
+      dbPromise.then(db => {
+        const getStoredData = db.transaction("data")
+          .objectStore("data");
+          return getStoredData.getAll().then((retrievedRestaurants) => {
+            console.log(retrievedRestaurants)
+                callback(null, retrievedRestaurants);
+          });
       });
     }
   }
