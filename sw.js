@@ -95,14 +95,14 @@ function servePhotos(request) {
 
   return caches.open(CACHE_IMGS_NAME).then(cache => {
     return cache.match(storageUrl).then(response => {
-      // if(response) return response; 
+      if(response) return response; 
       
       //TODO: Works only if imgs cached first. 
-      if(response.status === 404) {
-        return fetch(`img/10.jpg`);
-      } else if (response){
-        return response;
-      }
+      // if(response.status === 404) {
+      //   return fetch(`img/10.jpg`);
+      // } else if (response){
+      //   return response;
+      // }
       
       // } return response;
       // console.log(response)

@@ -1,7 +1,17 @@
 /**
  * Common database helper functions.
  */
+
+//Create DB
+ const dbPromise = idb.open("restaurant-data", 1, upgradeDB => {
+   const keyValStore = upgradeDB.createObjectStore("data", {
+    keyPath: "id"
+   });
+ });
+
+
 class DBHelper {
+
 
   /**
    * Database URL.
@@ -16,18 +26,32 @@ class DBHelper {
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback) {
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', DBHelper.DATABASE_URL);
-    xhr.onload = () => {
-      if (xhr.status === 200) { 
-        const restaurants = JSON.parse(xhr.responseText);
+    fetch(DBHelper.DATABASE_URL)
+      .then(res => res.json(),
+        error => console.log("An error has occured.", error)
+      ).then(data => {
+        let restaurants = data;
         callback(null, restaurants);
-      } else { 
-        const error = (`Request failed. Returned status of ${xhr.status}`);
-        callback(error, null);
-      }
-    };
-    xhr.send();
+        sendToDb(restaurants)
+        console.log(restaurants);
+      }).catch(err => {
+        console.log("error", err)
+        callback(err, null)
+      });
+
+    const sendToDb = (restaurants) => {
+      //send data to IDB
+      dbPromise.then(db => {
+        const tx = db.transaction("data", "readwrite");
+        const keyValStore = tx.objectStore("data");
+        restaurants.map(restaurant => {
+          keyValStore.put(restaurant);
+        })
+        return tx.complete;
+      }).then(() => {
+        console.log("added");
+      });
+    }
   }
 
   /**
