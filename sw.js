@@ -97,24 +97,6 @@ function servePhotos(request) {
     return cache.match(storageUrl).then(response => {
       if(response) return response; 
       
-      //TODO: Works only if imgs cached first. 
-      // if(response.status === 404) {
-      //   return fetch(`img/10.jpg`);
-      // } else if (response){
-      //   return response;
-      // }
-      
-      // } return response;
-      // console.log(response)
-      // If an image doesn't show up, put in placeholder
-      // if(response.status === 404) {
-      //   console.log(response.status)
-      //   return fetch(`img/10.jpg`);
-      // } else {
-      //   return response;
-      // }
-     
-
       return fetch(request).then(networkResponse => {
         cache.put(storageUrl, networkResponse.clone());
         return networkResponse;
