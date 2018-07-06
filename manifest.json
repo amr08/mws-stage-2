@@ -1,0 +1,16 @@
+{
+  "short_name": "ar-mws-restaurant-reviews",
+  "name": "AR Mobile Web Specialist Restaurant Reviews",
+  "icons": [
+    {
+      "src": "/img/candy.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#fdfdfd",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#0f6d47"
+}
