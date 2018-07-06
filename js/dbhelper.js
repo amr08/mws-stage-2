@@ -35,9 +35,7 @@ class DBHelper {
       }).catch(err => {
         console.log("error", err)
         callback(err, null)
-        if(dbPromise) {
-          readDb();
-        }
+        readDb();
       });
 
     const sendToDb = (restaurants) => {
@@ -50,7 +48,6 @@ class DBHelper {
         })
         return tx.complete;
       }).then(() => {
-        console.log("added");
         readDb();
       });
     }
@@ -60,8 +57,7 @@ class DBHelper {
         const getStoredData = db.transaction("data")
           .objectStore("data");
           return getStoredData.getAll().then((retrievedRestaurants) => {
-            console.log(retrievedRestaurants)
-                callback(null, retrievedRestaurants);
+            callback(null, retrievedRestaurants);
           });
       });
     }
