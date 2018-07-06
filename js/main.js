@@ -1,3 +1,4 @@
+/* eslint-disable */
 let restaurants,
   neighborhoods,
   cuisines;
@@ -6,6 +7,33 @@ var markers = [];
 var mykey = config.MY_API_KEY;
 var url = `https://maps.googleapis.com/maps/api/js?&libraries=places&key=${mykey}&callback=initMap`;
 document.getElementById("google-maps").src = url;
+
+
+// document.addEventListener("DOMContentLoaded", function() {
+//   var lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+//   console.log(lazyImages)
+
+//   if ("IntersectionObserver" in window) {
+//     let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+//       entries.forEach(function(entry) {
+//         if (entry.isIntersecting) {
+//           let lazyImage = entry.target;
+//           lazyImage.src = lazyImage.dataset.src;
+//           lazyImage.srcset = lazyImage.dataset.srcset;
+//           lazyImage.classList.remove("lazy");
+//           lazyImageObserver.unobserve(lazyImage);
+//         }
+//       });
+//     });
+
+//     lazyImages.forEach(function(lazyImage) {
+//       lazyImageObserver.observe(lazyImage);
+//     });
+//   } else {
+//     console.log("WHAT?")
+//     // Possibly fall back to a more compatible method here
+//   }
+// });
 
 
 /**
@@ -144,9 +172,11 @@ createRestaurantHTML = (restaurant) => {
   li.setAttribute("role", "listitem");
 
   const image = document.createElement('img');
-  image.className = 'restaurant-img';
+  image.className = 'restaurant-img lazy';
+
   image.setAttribute("alt", `the restaurant pictured is ${restaurant.name}`);
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.src = `${DBHelper.imageUrlForRestaurant(restaurant)}.jpg`;
+  image.srcset = `${DBHelper.imageUrlForRestaurant(restaurant)}.jpg 2x, ${DBHelper.imageUrlForRestaurant(restaurant)}-sm.jpg 1x`;
   li.append(image);
 
   const name = document.createElement('h2');
