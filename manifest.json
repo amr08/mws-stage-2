@@ -3,14 +3,19 @@
   "name": "AR Mobile Web Specialist Restaurant Reviews",
   "icons": [
     {
-      "src": "/img/candy.png",
+      "src": "/img/cupcake-sm.png",
       "type": "image/png",
       "sizes": "192x192"
+    },
+    {
+      "src": "/ima/cupcake-lg.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ],
-  "start_url": "/",
+  "start_url": "/maps/?source=pwa",
   "background_color": "#fdfdfd",
   "display": "standalone",
-  "scope": "/",
+  "scope": "/img/",
   "theme_color": "#0f6d47"
 }
