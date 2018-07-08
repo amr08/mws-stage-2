@@ -1,11 +1,18 @@
 # Mobile Web Specialist Certification Course
-## Restaurant Reviews App: Stage 2
----
+## Stage 2
+
 #### _Three Stage Course Material Project - Restaurant Reviews_
 
 ## Quick start
 
-* clone repo
+### API Server
+
+* follow instructions located here: https://github.com/udacity/mws-restaurant-stage-2
+
+
+### App
+
+* clone repo: `$ git clone git@github.com:amr08/mws-stage-2.git`
 * cd into the project directory
 * create a file called ```config.js``` and add this code to it:
 
