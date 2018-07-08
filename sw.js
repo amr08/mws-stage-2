@@ -12,7 +12,8 @@ const homeCacheUrls = [
   '/css/styles.css',
   '/js/restaurant_info.js',
   '/js/dbhelper.js',
-  '/404.html'
+  '/404.html',
+  'manifest.json'
 ];
 
 const restaurantPageCache = [
