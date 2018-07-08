@@ -24,4 +24,5 @@ const config = {
 
 * run `$ npm install`
 * run `$ npm start`
+* open app on http://localhost:8000/
 
