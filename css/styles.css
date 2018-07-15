@@ -377,7 +377,20 @@ nav h1 a {
 #reviews-container {
   padding: 30px 40px 80px;
   order: 2;
+  width: 100%;
+  text-align: center;
 }
+
+#reviews-container button {
+  padding: 8px;
+  margin-top: 0;
+}
+
+#reviews-form {
+  border: 2px solid red;
+  padding: 5px;
+}
+
 
 
 #reviews-container h2 {

@@ -99,8 +99,17 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
+  const reviewsButton = document.createElement("button");
+  const reviewsFormDiv = document.createElement("div");
+  reviewsFormDiv.setAttribute("id", "reviews-form");
   title.innerHTML = 'Reviews';
+  reviewsButton.innerHTML = "Add Review";
+  reviewsButton.onclick = () => {
+    reviewsFormDiv.appendChild(createReviewForm());
+  }
   container.appendChild(title);
+  container.appendChild(reviewsButton);
+  container.appendChild(reviewsFormDiv)
 
   if (!reviews) {
     const noReviews = document.createElement('p');
@@ -108,11 +117,13 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     container.appendChild(noReviews);
     return;
   }
+
   const ul = document.getElementById('reviews-list');
   reviews.forEach(review => {
     ul.appendChild(createReviewHTML(review));
   });
   container.appendChild(ul);
+
 }
 
 /**
@@ -137,6 +148,29 @@ createReviewHTML = (review) => {
   li.appendChild(comments);
 
   return li;
+}
+
+//Create form
+createReviewForm = (review) => {
+  const form = document.createElement("form");
+  const inputName = document.createElement('input');
+  inputName.setAttribute("placeholder", "name") 
+  // review.name;
+  form.appendChild(inputName);
+
+  // const date = document.createElement('p');
+  // date.innerHTML = review.date;
+  // li.appendChild(date);
+
+  // const rating = document.createElement('p');
+  // rating.innerHTML = `Rating: ${review.rating}`;
+  // li.appendChild(rating);
+
+  // const comments = document.createElement('p');
+  // comments.innerHTML = review.comments;
+  // li.appendChild(comments);
+
+  return form;
 }
 
 /**
