@@ -96,7 +96,8 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+fillReviewsHTML = (reviews = self.restaurant.reviews, id = self.restaurant.id) => {
+  console.log(self.restaurant)
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
   const reviewsButton = document.createElement("button");
@@ -104,8 +105,12 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   reviewsFormDiv.setAttribute("id", "reviews-form");
   title.innerHTML = 'Reviews';
   reviewsButton.innerHTML = "Add Review";
+  reviewsButton.value ="Add Review";
+  reviewsButton.id="review-button";
+  reviewsButton.type = "button";
   reviewsButton.onclick = () => {
-    reviewsFormDiv.appendChild(createReviewForm());
+    reviewsFormDiv.appendChild(createReviewForm(reviews, id));
+    reviewsButton.parentNode.removeChild(reviewsButton);
   }
   container.appendChild(title);
   container.appendChild(reviewsButton);
@@ -151,24 +156,74 @@ createReviewHTML = (review) => {
 }
 
 //Create form
-createReviewForm = (review) => {
+createReviewForm = (review, id) => {
+  console.log("review", review)
+  console.log("id", id)
   const form = document.createElement("form");
+  form.setAttribute("id", "submit-review-form");
   const inputName = document.createElement('input');
-  inputName.setAttribute("placeholder", "name") 
-  // review.name;
+  const labelName = document.createElement("label");
+  labelName.innerHTML = "Name";
+  labelName.classList.add("off-screen");
+  inputName.setAttribute("placeholder", "Name");
+  inputName.setAttribute("name", "name");
+  form.appendChild(labelName);
   form.appendChild(inputName);
 
-  // const date = document.createElement('p');
-  // date.innerHTML = review.date;
-  // li.appendChild(date);
+  const inputID = document.createElement('input');
+  const labelID = document.createElement("label");
+  labelID.innerHTML = "Restaurant ID";
+  labelID.classList.add("off-screen");
+  inputID.setAttribute("value", id);
+  inputID.setAttribute("placeholder", "Restaurant Id");
+  inputID.setAttribute("type", "hidden");
+  inputID.setAttribute("disabled", "true");
+  inputID.setAttribute("name", "id");
+  form.appendChild(labelID);
+  form.appendChild(inputID);
 
-  // const rating = document.createElement('p');
-  // rating.innerHTML = `Rating: ${review.rating}`;
-  // li.appendChild(rating);
+  const selectRating = document.createElement('select');
+  const labelRating = document.createElement("label");
+  labelRating.innerHTML = "Rating";
+  // labelRating.classList.add("off-screen");
+  const placeholderOption = document.createElement('option');
+  placeholderOption.value = "";
+  placeholderOption.innerHTML = "Select Rating";
+  placeholderOption.setAttribute("disabled", true);
+  placeholderOption.setAttribute("selected", true);
+  selectRating.appendChild(placeholderOption);
 
-  // const comments = document.createElement('p');
-  // comments.innerHTML = review.comments;
-  // li.appendChild(comments);
+  for(var i = 1; i <= 5; i++){
+    let ratingOption = document.createElement('option');
+    ratingOption.value = i;
+    ratingOption.innerHTML = i;
+    selectRating.appendChild(ratingOption);
+  }
+
+  selectRating.appendChild(labelRating);
+  form.appendChild(selectRating);
+
+  const commentsInput = document.createElement('textarea');
+  const commentsLabel = document.createElement("label");
+  commentsLabel.innerHTML = "Comments";
+  commentsLabel.classList.add("off-screen");
+  commentsInput.setAttribute("placeholder", "Add your comments");
+  commentsInput.setAttribute("name", "comments");
+  commentsInput.setAttribute("maxlength", "500");
+  commentsInput.setAttribute("rows", "3");
+  form.appendChild(commentsLabel);
+  form.appendChild(commentsInput);
+
+  const submitReviewButton = document.createElement("button");
+  submitReviewButton.innerHTML = "Submit Review";
+  submitReviewButton.value ="Submit Review";
+  submitReviewButton.id="submit-button";
+  submitReviewButton.type = "submit";
+  // reviewsButton.onclick = () => {
+  //   reviewsFormDiv.appendChild(createReviewForm(reviews, id));
+  //   reviewsButton.parentNode.removeChild(reviewsButton);
+  // }
+  form.appendChild(submitReviewButton);
 
   return form;
 }

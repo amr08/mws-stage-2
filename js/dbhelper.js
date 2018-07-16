@@ -30,6 +30,7 @@ class DBHelper {
       ).then(data => {
         let restaurants = data;
         sendToDb(restaurants);
+        console.log(restaurants);
       }).catch(err => {
         // eslint-disable-next-line
         console.log("error", err);

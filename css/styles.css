@@ -384,11 +384,34 @@ nav h1 a {
 #reviews-container button {
   padding: 8px;
   margin-top: 0;
+  min-width: 30%;
 }
 
+/*REVIEWS FORM*/
 #reviews-form {
-  border: 2px solid red;
-  padding: 5px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+#reviews-form form{
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+}
+
+#reviews-form input, textarea, select {
+  padding: 8px;
+  margin-bottom: 5px;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+#reviews-form textarea {
+  max-width: 100%;
+  min-width: 50%;
+  min-height: 50px;
+  max-height: 200px;
 }
 
 
