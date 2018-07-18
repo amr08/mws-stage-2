@@ -390,6 +390,7 @@ nav h1 a {
 /*REVIEWS FORM*/
 #reviews-form {
   margin-top: 20px;
+  margin-bottom: 20px;
   display: flex;
   justify-content: center;
 }
@@ -397,7 +398,11 @@ nav h1 a {
 #reviews-form form{
   display: flex;
   flex-direction: column;
-  width: 70%;
+  width: 60%;
+  box-shadow: 0 0 5px grey;
+  border-radius: 5px;
+  padding: 25px;
+  background: white;
 }
 
 #reviews-form input, textarea, select {
