@@ -97,7 +97,6 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
  * Create all reviews HTML and add them to the webpage.
  */
 fillReviewsHTML = (reviews = self.restaurant.reviews, id = self.restaurant.id) => {
-  console.log(self.restaurant)
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
   const reviewsButton = document.createElement("button");
@@ -158,7 +157,6 @@ createReviewHTML = (review) => {
 //Create form
 createReviewForm = (review, id) => {
   console.log("review", review)
-  console.log("id", id)
   const form = document.createElement("form");
   form.setAttribute("id", "submit-review-form");
   const inputName = document.createElement('input');
@@ -219,10 +217,20 @@ createReviewForm = (review, id) => {
   submitReviewButton.value ="Submit Review";
   submitReviewButton.id="submit-button";
   submitReviewButton.type = "submit";
-  // reviewsButton.onclick = () => {
-  //   reviewsFormDiv.appendChild(createReviewForm(reviews, id));
-  //   reviewsButton.parentNode.removeChild(reviewsButton);
-  // }
+    submitReviewButton.onclick = (e) => {
+      e.preventDefault();
+      const review = 
+        {
+          "id": id, 
+          "review": {
+            "name": inputName.value,
+            "date":  moment().format("LL"),
+            "rating":  selectRating.options[selectRating.selectedIndex].value,
+            "comments": commentsInput.value
+          }
+        }
+      return DBHelper.postReviews(review);
+    }
   form.appendChild(submitReviewButton);
 
   return form;

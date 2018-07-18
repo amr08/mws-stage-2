@@ -63,6 +63,12 @@ class DBHelper {
     };
   }
 
+  static postReviews(review){
+    //TODO: Send to IDB so user can read data while offline
+    console.log(review);
+    //TODO: Then get data from IDB and post to server once back online
+  }
+
   /**
    * Fetch a restaurant by its ID.
    */
