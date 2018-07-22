@@ -97,6 +97,11 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
  * Create all reviews HTML and add them to the webpage.
  */
 fillReviewsHTML = (reviews = self.restaurant.reviews, id = self.restaurant.id) => {
+  // DBHelper.fetchReviews(id, (error, reviews) => {
+  //   console.log(reviews, error)
+  // }
+  // console.log(id);
+  DBHelper.fetchReviews(id);
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
   const reviewsButton = document.createElement("button");

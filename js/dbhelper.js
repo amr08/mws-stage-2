@@ -16,14 +16,14 @@ class DBHelper {
   //Database URL
   static get DATABASE_URL() {
     const port = 1337; 
-    return `http://localhost:${port}/restaurants`;
+    return `http://localhost:${port}/`;
   }
 
   /**
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback) {
-    fetch(DBHelper.DATABASE_URL)
+    fetch(`${DBHelper.DATABASE_URL}restaurants`)
       .then(res => res.json(),
         // eslint-disable-next-line
         error => console.log("An error has occured.", error)
@@ -63,11 +63,28 @@ class DBHelper {
     };
   }
 
+  static fetchReviews(id){
+     fetch(`${DBHelper.DATABASE_URL}reviews/?restaurant_id=${id}`)
+      .then(res => res.json(),
+        error => console.log("An error has occured.", error)
+      ).then(data => {
+        let reviews = data;
+        // sendToDb(restaurants);
+        console.log(reviews);
+      }).catch(err => {
+        // eslint-disable-next-line
+        console.log("error", err);
+        callback(err, null);
+        // readDb();
+      });
+  }
+
   static postReviews(review){
     //TODO: Send to IDB so user can read data while offline
     console.log(review);
     //TODO: Then get data from IDB and post to server once back online
   }
+
 
   /**
    * Fetch a restaurant by its ID.
