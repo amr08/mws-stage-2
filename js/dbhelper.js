@@ -9,6 +9,9 @@ const dbPromise = idb.open("restaurant-data", 1, upgradeDB => {
   upgradeDB.createObjectStore("data", {
     keyPath: "id"
   });
+  upgradeDB.createObjectStore("reviews", {
+    keyPath: "id"
+  });
 });
 
 // eslint-disable-next-line
@@ -19,64 +22,112 @@ class DBHelper {
     return `http://localhost:${port}/`;
   }
 
+  static fetchInit(path, callback, store){
+     fetch(`${DBHelper.DATABASE_URL}${path}`)
+     .then(res => res.json(),
+
+      error => console.log("An error has occured.", error)
+      ).then(data => {
+        DBHelper.sendToDb(data, callback, store);
+      }).catch(err => {
+        // eslint-disable-next-line
+        console.log("error", err);
+        if(callback) {
+          callback(err, null);
+        }
+        DBHelper.readDb(callback, store);
+      });
+  }
+
+  static readDb(callback, store){
+    dbPromise.then(db => {
+      const getStoredData = db.transaction(store)
+        .objectStore(store);
+      return getStoredData.getAll().then((retrievedData) => {
+        if(callback){
+          callback(null, retrievedData);
+        }
+      });
+    });
+  }
+
+  static sendToDb(data, callback, store){
+      // //send data to IDB
+      if(store === "data"){
+        dbPromise.then(db => {
+          const tx = db.transaction(store, "readwrite");
+          const keyValStore = tx.objectStore(store);
+          data.map(restaurant => {
+            keyValStore.put(restaurant);
+          });
+          return tx.complete;
+        }).then(() => {
+          DBHelper.readDb(callback, store);
+        });
+      }
+      if(store === "reviews"){
+         dbPromise.then(db => {
+          const tx = db.transaction(store, "readwrite");
+          const keyValStore = tx.objectStore(store);
+          data.map(review => {
+            keyValStore.put(review);
+          });
+          return tx.complete;
+        }).then(() => {
+          DBHelper.readDb(callback, store);
+        });
+
+      }
+    };
+
   /**
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback) {
-    fetch(`${DBHelper.DATABASE_URL}restaurants`)
-      .then(res => res.json(),
-        // eslint-disable-next-line
-        error => console.log("An error has occured.", error)
-      ).then(data => {
-        let restaurants = data;
-        sendToDb(restaurants);
-        console.log(restaurants);
-      }).catch(err => {
-        // eslint-disable-next-line
-        console.log("error", err);
-        callback(err, null);
-        readDb();
-      });
+   DBHelper.fetchInit("restaurants", callback, "data");
 
-    const sendToDb = (restaurants) => {
-      //send data to IDB
-      dbPromise.then(db => {
-        const tx = db.transaction("data", "readwrite");
-        const keyValStore = tx.objectStore("data");
-        restaurants.map(restaurant => {
-          keyValStore.put(restaurant);
-        });
-        return tx.complete;
-      }).then(() => {
-        readDb();
-      });
-    };
 
-    const readDb = () => {
-      dbPromise.then(db => {
-        const getStoredData = db.transaction("data")
-          .objectStore("data");
-        return getStoredData.getAll().then((retrievedRestaurants) => {
-          callback(null, retrievedRestaurants);
-        });
-      });
-    };
+    //   .then(res => res.json(),
+    //     // eslint-disable-next-line
+    //     error => console.log("An error has occured.", error)
+    //   ).then(data => {
+    //     let restaurants = data;
+    //     sendToDb(restaurants);
+    //     console.log(restaurants);
+    //   }).catch(err => {
+    //     // eslint-disable-next-line
+    //     console.log("error", err);
+    //     callback(err, null);
+    //     readDb();
+    //   });
+
+    // const sendToDb = (restaurants) => {
+    //   //send data to IDB
+    //   dbPromise.then(db => {
+    //     const tx = db.transaction("data", "readwrite");
+    //     const keyValStore = tx.objectStore("data");
+    //     restaurants.map(restaurant => {
+    //       keyValStore.put(restaurant);
+    //     });
+    //     return tx.complete;
+    //   }).then(() => {
+    //     readDb();
+    //   });
+    // };
+
+    // const readDb = () => {
+    //   dbPromise.then(db => {
+    //     const getStoredData = db.transaction("data")
+    //       .objectStore("data");
+    //     return getStoredData.getAll().then((retrievedRestaurants) => {
+    //       callback(null, retrievedRestaurants);
+    //     });
+    //   });
+    // };
   }
 
-  static fetchReviews(id){
-     fetch(`${DBHelper.DATABASE_URL}reviews/?restaurant_id=${id}`)
-      .then(res => res.json(),
-        error => console.log("An error has occured.", error)
-      ).then(data => {
-        let reviews = data;
-        // sendToDb(restaurants);
-        console.log(reviews);
-      }).catch(err => {
-        // eslint-disable-next-line
-        console.log("error", err);
-        callback(err, null);
-        // readDb();
-      });
+  static fetchReviews(id, callback){
+    DBHelper.fetchInit(`reviews/?restaurant_id=${id}`, callback, "reviews");
   }
 
   static postReviews(review){
