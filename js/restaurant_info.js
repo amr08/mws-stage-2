@@ -182,8 +182,7 @@ createReviewHTML = (review) => {
 }
 
 //Create form
-createReviewForm = (review, id) => {
-  console.log("review", review)
+createReviewForm = (reviews, id) => {
   const form = document.createElement("form");
   form.setAttribute("id", "submit-review-form");
   const inputName = document.createElement('input');
@@ -246,14 +245,15 @@ createReviewForm = (review, id) => {
   submitReviewButton.type = "submit";
     submitReviewButton.onclick = (e) => {
       e.preventDefault();
-      const review = 
+      const postReview = 
         {
+          "id": reviews.length + 1, 
           "restaurant_id": id, 
           "name": inputName.value,  
           "rating":  selectRating.options[selectRating.selectedIndex].value,
           "comments": commentsInput.value
         }
-      return DBHelper.postReviews(review);
+      return DBHelper.postReviews(postReview);
     }
   form.appendChild(submitReviewButton);
 

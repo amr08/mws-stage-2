@@ -5,7 +5,7 @@
 
 //Create DB
 // eslint-disable-next-line
-const dbPromise = idb.open("restaurant-data", 3, upgradeDB => {
+const dbPromise = idb.open("restaurant-data", 1, upgradeDB => {
   upgradeDB.createObjectStore("data", {
     keyPath: "id"
   });
@@ -38,13 +38,11 @@ class DBHelper {
   }
 
   static readDb(callback, store){
-    console.log("CALLED")
     dbPromise.then(db => {
       const getStoredData = db.transaction(store)
         .objectStore(store);
       return getStoredData.getAll().then((retrievedData) => {
         if(callback){
-          console.log(retrievedData)
           callback(null, retrievedData);
         }
       });
@@ -127,18 +125,15 @@ class DBHelper {
   }
 
   static fetchReviews(id, callback){
-    console.log(id);
     DBHelper.fetchInit(`reviews/?restaurant_id=${id}`, callback, "reviews");
   }
 
   static postReviews(review){
     //Send to IDB so user can read data while offline
-    console.log(review);
      dbPromise.then(db => {
       const tx = db.transaction("reviews", "readwrite");
-      console.log(tx)
       const keyValStore = tx.objectStore("reviews");
-      console.log(keyValStore)
+      console.log(review);
       keyValStore.put(review);
       return tx.complete;
      }).then(() => {
