@@ -5,7 +5,7 @@
 
 //Create DB
 // eslint-disable-next-line
-const dbPromise = idb.open("restaurant-data", 1, upgradeDB => {
+const dbPromise = idb.open("restaurant-data", 3, upgradeDB => {
   upgradeDB.createObjectStore("data", {
     keyPath: "id"
   });
@@ -32,19 +32,19 @@ class DBHelper {
       }).catch(err => {
         // eslint-disable-next-line
         console.log("error", err);
-        if(callback) {
-          callback(err, null);
-        }
+        //If offline, go straight to IDB to pull data to user
         DBHelper.readDb(callback, store);
       });
   }
 
   static readDb(callback, store){
+    console.log("CALLED")
     dbPromise.then(db => {
       const getStoredData = db.transaction(store)
         .objectStore(store);
       return getStoredData.getAll().then((retrievedData) => {
         if(callback){
+          console.log(retrievedData)
           callback(null, retrievedData);
         }
       });
@@ -127,12 +127,23 @@ class DBHelper {
   }
 
   static fetchReviews(id, callback){
+    console.log(id);
     DBHelper.fetchInit(`reviews/?restaurant_id=${id}`, callback, "reviews");
   }
 
   static postReviews(review){
-    //TODO: Send to IDB so user can read data while offline
+    //Send to IDB so user can read data while offline
     console.log(review);
+     dbPromise.then(db => {
+      const tx = db.transaction("reviews", "readwrite");
+      console.log(tx)
+      const keyValStore = tx.objectStore("reviews");
+      console.log(keyValStore)
+      keyValStore.put(review);
+      return tx.complete;
+     }).then(() => {
+      console.log("added!");
+     })
     //TODO: Then get data from IDB and post to server once back online
   }
 

@@ -54,8 +54,14 @@ fetchReviewsFromURL = (id = self.restaurant.id) => {
   }
 
   DBHelper.fetchReviews(id, (error, reviews) => {
-    self.reviews = reviews;
-    if (!reviews) {
+    let reviewsById = reviews.filter(review => {
+      if(review.restaurant_id === id) {
+        return review;
+      } 
+    });
+    
+    self.reviews = reviewsById;
+    if (!reviewsById) {
         console.error(error);
         return;
       }
@@ -116,7 +122,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
  * Create all reviews HTML and add them to the webpage.
  */
 fillReviewsHTML = (reviews = self.reviews, id = self.restaurant.id) => {
-  
+
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
   const reviewsButton = document.createElement("button");
@@ -242,13 +248,10 @@ createReviewForm = (review, id) => {
       e.preventDefault();
       const review = 
         {
-          "id": id, 
-          "review": {
-            "name": inputName.value,
-            "date":  moment().format("LL"),
-            "rating":  selectRating.options[selectRating.selectedIndex].value,
-            "comments": commentsInput.value
-          }
+          "restaurant_id": id, 
+          "name": inputName.value,  
+          "rating":  selectRating.options[selectRating.selectedIndex].value,
+          "comments": commentsInput.value
         }
       return DBHelper.postReviews(review);
     }
