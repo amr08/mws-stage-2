@@ -3,6 +3,24 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     navigator.serviceWorker.register('../sw.js')
       .then(registration => {
+        if("sync" in registration){
+          // console.log("yas");
+          // console.log(registration)
+          // const reviewButton = document.getElementById("review-button");
+          // console.log(reviewButton)
+          // if(reviewButton.onclick){
+          //   console.log(true)
+
+          observer(registration);
+          // }
+          // const submitButton = document.getElementById("submit-button");
+          // console.log(submitButton)
+          // submitButton.onclick = () => {
+          //   console.log("cool");
+          // }
+          
+          // console.log("yas");
+        }
         registration.onupdatefound = () => {
           const installingWorker = registration.installing;
           installingWorker.onstatechange = () => {
@@ -55,4 +73,56 @@ const addToast = (installingWorker) => {
   toastDiv.appendChild(dismissButton);
 
   body.appendChild(toastDiv);
+}
+
+function observer(registration){
+
+
+  var targetNode = document.getElementById('reviews-container');
+
+  // Options for the observer (which mutations to observe)
+  var config = { attributes: true, childList: true, subtree: true };
+
+  var callback = function(mutationsList) {
+    for(var mutation of mutationsList) {
+
+        if (mutation.type == 'childList') {
+          console.log(mutation)
+
+          if(mutation.target.id === "reviews-form"){
+            const submitIntercept = document.getElementById("submit-button");
+              submitIntercept.addEventListener("click", e => { 
+                e.preventDefault();
+                const nameValue = document.getElementById("name");
+                const idValue = document.getElementById("id")
+                const commentsValue = document.getElementById("comments");
+                const ratingValue = document.getElementById("rating");
+         
+                const postReview = 
+                  {
+                    "id": parseInt(idValue.value), 
+                    "restaurant_id": parseInt(idValue.dataset.restaurant), 
+                    "name": nameValue.value,  
+                    "rating":  parseInt(ratingValue.options[ratingValue.selectedIndex].value),
+                    "comments": commentsValue.value
+                  }
+
+                  DBHelper.postReviews(postReview);
+                  registration.sync.register("postToAPI");
+                  return;
+             });
+          }
+           
+        }
+        else if (mutation.type == 'attributes') {
+            console.log('The ' + mutation.attributeName + ' attribute was modified.');
+        }
+    }
+  };
+
+
+  const observer = new MutationObserver(callback);
+
+
+  observer.observe(targetNode, config);
 }

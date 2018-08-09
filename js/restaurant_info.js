@@ -190,6 +190,7 @@ createReviewForm = (reviews, id) => {
   labelName.innerHTML = "Name";
   labelName.classList.add("off-screen");
   inputName.setAttribute("placeholder", "Name");
+  inputName.setAttribute("id", "name");
   inputName.setAttribute("name", "name");
   form.appendChild(labelName);
   form.appendChild(inputName);
@@ -198,15 +199,18 @@ createReviewForm = (reviews, id) => {
   const labelID = document.createElement("label");
   labelID.innerHTML = "Restaurant ID";
   labelID.classList.add("off-screen");
-  inputID.setAttribute("value", id);
+  inputID.setAttribute("value", reviews.length + 1);
+  inputID.dataset.restaurant = id;
   inputID.setAttribute("placeholder", "Restaurant Id");
   inputID.setAttribute("type", "hidden");
   inputID.setAttribute("disabled", "true");
   inputID.setAttribute("name", "id");
+  inputID.setAttribute("id", "id");
   form.appendChild(labelID);
   form.appendChild(inputID);
 
   const selectRating = document.createElement('select');
+  selectRating.setAttribute("id", "rating");
   const labelRating = document.createElement("label");
   labelRating.innerHTML = "Rating";
   // labelRating.classList.add("off-screen");
@@ -233,6 +237,7 @@ createReviewForm = (reviews, id) => {
   commentsLabel.classList.add("off-screen");
   commentsInput.setAttribute("placeholder", "Add your comments");
   commentsInput.setAttribute("name", "comments");
+  commentsInput.setAttribute("id", "comments");
   commentsInput.setAttribute("maxlength", "500");
   commentsInput.setAttribute("rows", "3");
   form.appendChild(commentsLabel);
@@ -243,18 +248,25 @@ createReviewForm = (reviews, id) => {
   submitReviewButton.value ="Submit Review";
   submitReviewButton.id="submit-button";
   submitReviewButton.type = "submit";
-    submitReviewButton.onclick = (e) => {
-      e.preventDefault();
-      const postReview = 
-        {
-          "id": reviews.length + 1, 
-          "restaurant_id": id, 
-          "name": inputName.value,  
-          "rating":  selectRating.options[selectRating.selectedIndex].value,
-          "comments": commentsInput.value
-        }
-      return DBHelper.postReviews(postReview);
-    }
+
+  //TODO ADD SOME DATA VALUES AS HIDDEN FIELDS
+
+  ///TODO
+    // submitReviewButton.onclick = (e) => {
+    //   console.log(e)
+    //   e.preventDefault();
+    //   const postReview = 
+    //     {
+    //       "id": reviews.length + 1, 
+    //       "restaurant_id": id, 
+    //       "name": inputName.value,  
+    //       "rating":  selectRating.options[selectRating.selectedIndex].value,
+    //       "comments": commentsInput.value
+    //     }
+    //   return DBHelper.postReviews(postReview);
+    // }
+
+    ////^^^^
   form.appendChild(submitReviewButton);
 
   return form;

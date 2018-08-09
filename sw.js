@@ -74,6 +74,15 @@ self.addEventListener('fetch', event => {
   );
 });
 
+self.addEventListener('sync', event => {
+  event.waitUntil(
+    
+    // event.waitUntil(doSomeStuff());
+    console.log(true)
+    //SEND POST HERE
+  );
+});
+
 
 function serveRestaurantHtml(request) {
   var storageUrl = request.url.replace(/-\d+px\.jpg$/, '');
