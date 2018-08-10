@@ -83,63 +83,26 @@ class DBHelper {
    */
   static fetchRestaurants(callback) {
    DBHelper.fetchInit("restaurants", callback, "data");
-
-
-    //   .then(res => res.json(),
-    //     // eslint-disable-next-line
-    //     error => console.log("An error has occured.", error)
-    //   ).then(data => {
-    //     let restaurants = data;
-    //     sendToDb(restaurants);
-    //     console.log(restaurants);
-    //   }).catch(err => {
-    //     // eslint-disable-next-line
-    //     console.log("error", err);
-    //     callback(err, null);
-    //     readDb();
-    //   });
-
-    // const sendToDb = (restaurants) => {
-    //   //send data to IDB
-    //   dbPromise.then(db => {
-    //     const tx = db.transaction("data", "readwrite");
-    //     const keyValStore = tx.objectStore("data");
-    //     restaurants.map(restaurant => {
-    //       keyValStore.put(restaurant);
-    //     });
-    //     return tx.complete;
-    //   }).then(() => {
-    //     readDb();
-    //   });
-    // };
-
-    // const readDb = () => {
-    //   dbPromise.then(db => {
-    //     const getStoredData = db.transaction("data")
-    //       .objectStore("data");
-    //     return getStoredData.getAll().then((retrievedRestaurants) => {
-    //       callback(null, retrievedRestaurants);
-    //     });
-    //   });
-    // };
   }
 
   static fetchReviews(id, callback){
     DBHelper.fetchInit(`reviews/?restaurant_id=${id}`, callback, "reviews");
   }
 
-  static postReviews(review){
+  static postReviews(review, id){
+    review.id = id
+    console.log(review);
+ 
     //Send to IDB so user can read data while offline
      dbPromise.then(db => {
       const tx = db.transaction("reviews", "readwrite");
       const keyValStore = tx.objectStore("reviews");
-      console.log(review);
       keyValStore.put(review);
       return tx.complete;
      }).then(() => {
-      console.log("added!");
+      console.log("added locally!");
+       DBHelper.fetchReviews(`reviews/?restaurant_id=${review.restaurant_id}`)
      })
-    //TODO: Then get data from IDB and post to server once back online
   }
 
 
@@ -284,3 +247,14 @@ class DBHelper {
 
 
 }
+
+
+//DELETE
+  // fetch(`http://localhost:1337/reviews/33`, {
+  //   method: 'delete'
+  // }).then(response =>
+  //   response.json().then(json => {
+  //     return json;
+  //   })
+  // );
+

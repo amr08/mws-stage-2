@@ -249,26 +249,7 @@ createReviewForm = (reviews, id) => {
   submitReviewButton.id="submit-button";
   submitReviewButton.type = "submit";
 
-  //TODO ADD SOME DATA VALUES AS HIDDEN FIELDS
-
-  ///TODO
-    // submitReviewButton.onclick = (e) => {
-    //   console.log(e)
-    //   e.preventDefault();
-    //   const postReview = 
-    //     {
-    //       "id": reviews.length + 1, 
-    //       "restaurant_id": id, 
-    //       "name": inputName.value,  
-    //       "rating":  selectRating.options[selectRating.selectedIndex].value,
-    //       "comments": commentsInput.value
-    //     }
-    //   return DBHelper.postReviews(postReview);
-    // }
-
-    ////^^^^
   form.appendChild(submitReviewButton);
-
   return form;
 }
 

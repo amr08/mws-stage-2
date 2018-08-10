@@ -68,18 +68,26 @@ self.addEventListener('fetch', event => {
     caches.match(event.request).then(response => (
       response || fetch(event.request)
     )).catch(error => {
-      console.log("ERROR", error)
+      console.log("ERROR", error);
       return caches.match('/404.html');
     })
   );
 });
 
 self.addEventListener('sync', event => {
+  console.log(event.tag)
   event.waitUntil(
-    
-    // event.waitUntil(doSomeStuff());
-    console.log(true)
-    //SEND POST HERE
+    fetch("http://localhost:1337/reviews/", {
+       method: 'POST',
+       body: event.tag,
+       headers: {
+         'Content-Type': 'application/json',
+       }
+     }).then(function(response) {  
+       return response;
+     }).then(function(data) {
+      console.log("Posted once online");
+    }).catch(function(err) { console.error(err); })
   );
 });
 

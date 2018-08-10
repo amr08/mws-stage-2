@@ -77,52 +77,48 @@ const addToast = (installingWorker) => {
 
 function observer(registration){
 
+  if(window.location.pathname.startsWith("/restaurant")) {
+    var targetNode = document.getElementById('reviews-container');
 
-  var targetNode = document.getElementById('reviews-container');
+    // Options for the observer (which mutations to observe)
+    var config = { attributes: true, childList: true, subtree: true };
 
-  // Options for the observer (which mutations to observe)
-  var config = { attributes: true, childList: true, subtree: true };
+    var callback = function(mutationsList) {
+      for(var mutation of mutationsList) {
 
-  var callback = function(mutationsList) {
-    for(var mutation of mutationsList) {
-
-        if (mutation.type == 'childList') {
-          console.log(mutation)
-
-          if(mutation.target.id === "reviews-form"){
-            const submitIntercept = document.getElementById("submit-button");
-              submitIntercept.addEventListener("click", e => { 
-                e.preventDefault();
-                const nameValue = document.getElementById("name");
-                const idValue = document.getElementById("id")
-                const commentsValue = document.getElementById("comments");
-                const ratingValue = document.getElementById("rating");
-         
-                const postReview = 
-                  {
-                    "id": parseInt(idValue.value), 
-                    "restaurant_id": parseInt(idValue.dataset.restaurant), 
-                    "name": nameValue.value,  
-                    "rating":  parseInt(ratingValue.options[ratingValue.selectedIndex].value),
-                    "comments": commentsValue.value
-                  }
-
-                  DBHelper.postReviews(postReview);
-                  registration.sync.register("postToAPI");
-                  return;
-             });
-          }
+          if (mutation.type == 'childList') {
+            if(mutation.target.id === "reviews-form"){
+              const submitIntercept = document.getElementById("submit-button");
+                submitIntercept.addEventListener("click", e => { 
+                  e.preventDefault();
+                  const nameValue = document.getElementById("name");
+                  const idValue = document.getElementById("id")
+                  const commentsValue = document.getElementById("comments");
+                  const ratingValue = document.getElementById("rating");
            
-        }
-        else if (mutation.type == 'attributes') {
-            console.log('The ' + mutation.attributeName + ' attribute was modified.');
-        }
-    }
-  };
+                  const postReview = 
+                    {
+                      "restaurant_id": parseInt(idValue.dataset.restaurant), 
+                      "name": nameValue.value,  
+                      "rating":  parseInt(ratingValue.options[ratingValue.selectedIndex].value),
+                      "comments": commentsValue.value
+                    }
 
+                    DBHelper.postReviews(postReview, parseInt(idValue.value));
+                    registration.sync.register(JSON.stringify(postReview));
+                    return;
+               });
+            }
+             
+          }
+          else if (mutation.type == 'attributes') {
+              console.log('The ' + mutation.attributeName + ' attribute was modified.');
+          }
+      }
+    };
 
-  const observer = new MutationObserver(callback);
+    const observer = new MutationObserver(callback);
+    observer.observe(targetNode, config);
 
-
-  observer.observe(targetNode, config);
+  }
 }
