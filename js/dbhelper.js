@@ -109,6 +109,21 @@ class DBHelper {
   }
 
   static deleteReview(id){
+
+     dbPromise.then(db => {
+      const tx = db.transaction(["reviews"], "readwrite");
+      const keyValStore = tx.objectStore("reviews").iterateCursor(cursor => {
+        if (!cursor) return;
+
+        if(cursor.value.id === id){
+            cursor.delete();
+        } else {
+            cursor.continue();
+        }
+      });
+      tx.complete.then(() => console.log("done"));
+    });
+
     fetch(`http://localhost:1337/reviews/${id}`, {
         method: 'delete'
       }).then(response =>
@@ -116,16 +131,6 @@ class DBHelper {
         return json;
       })
     );
-     dbPromise.then(db => {
-      const tx = db.transaction("reviews", "readwrite");
-      const keyValStore = tx.objectStore("reviews");
-        keyValStore.delete(id);
-        return tx.complete;
-      }).then(() => {
-        // DBHelper.readDb(callback, "reviews");
-      });
-
-    
   }
 
 

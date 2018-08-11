@@ -4,6 +4,7 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('../sw.js')
       .then(registration => {
         if("sync" in registration){
+     
           //Listen for changes to form in order to track submit button then send sync message to sw
           observer(registration);
         }
@@ -81,7 +82,7 @@ function observer(registration){
                   const idValue = document.getElementById("id")
                   const commentsValue = document.getElementById("comments");
                   const ratingValue = document.getElementById("rating");
-           
+                  console.log(idValue)
                   const postReview = 
                     {
                       "restaurant_id": parseInt(idValue.dataset.restaurant), 
@@ -92,12 +93,14 @@ function observer(registration){
 
                     DBHelper.postReviews(postReview, parseInt(idValue.value));
                     registration.sync.register(JSON.stringify(postReview));
+                    const reviewsContainer = document.getElementById("reviews-container");
+                    reviewsContainer.innerHTML = "";
                     return;
                });
             } 
           }
           else if (mutation.type == 'attributes') {
-              console.log('The ' + mutation.attributeName + ' attribute was modified.');
+              // console.log('The ' + mutation.attributeName + ' attribute was modified.');
           }
       }
     };

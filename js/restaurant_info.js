@@ -47,11 +47,6 @@ fetchRestaurantFromURL = (callback) => {
 }
 
 fetchReviewsFromURL = (id = self.restaurant.id) => {
-  // console.log(callback)
-  if (self.reviews) { // restaurant already fetched!
-    callback(null, self.reviews)
-    return;
-  }
 
   DBHelper.fetchReviews(id, (error, reviews) => {
     let reviewsById = reviews.filter(review => {
@@ -66,7 +61,6 @@ fetchReviewsFromURL = (id = self.restaurant.id) => {
         return;
       }
       fillReviewsHTML();
-      // callback(null, review);
   });
 }
 
@@ -127,6 +121,20 @@ fillReviewsHTML = (reviews = self.reviews, id = self.restaurant.id) => {
   const title = document.createElement('h2');
   const reviewsButton = document.createElement("button");
   const reviewsFormDiv = document.createElement("div");
+  const reviewsList = document.createElement("ul");
+  reviewsList.id = "reviews-list";
+
+  container.appendChild(title);
+  container.appendChild(reviewsButton);
+  container.appendChild(reviewsFormDiv);
+  container.appendChild(reviewsList);
+
+  const ul = document.getElementById('reviews-list');
+  reviews.forEach(review => {
+    ul.appendChild(createReviewHTML(review));
+  });
+  container.appendChild(ul);
+
   reviewsFormDiv.setAttribute("id", "reviews-form");
   title.innerHTML = 'Reviews';
   reviewsButton.innerHTML = "Add Review";
@@ -137,9 +145,6 @@ fillReviewsHTML = (reviews = self.reviews, id = self.restaurant.id) => {
     reviewsFormDiv.appendChild(createReviewForm(reviews, id));
     reviewsButton.parentNode.removeChild(reviewsButton);
   }
-  container.appendChild(title);
-  container.appendChild(reviewsButton);
-  container.appendChild(reviewsFormDiv)
 
   if (!reviews) {
     const noReviews = document.createElement('p');
@@ -148,11 +153,7 @@ fillReviewsHTML = (reviews = self.reviews, id = self.restaurant.id) => {
     return;
   }
 
-  const ul = document.getElementById('reviews-list');
-  reviews.forEach(review => {
-    ul.appendChild(createReviewHTML(review));
-  });
-  container.appendChild(ul);
+
 
 }
 
@@ -180,10 +181,13 @@ createReviewHTML = (review) => {
 
   deleteButton.innerHTML = "Delete";
   deleteButton.value = review.id;
-  deleteButton.id="delete-button";
+  deleteButton.setAttribute("class","delete-button");
   deleteButton.type = "button";
   deleteButton.onclick = () => {
     DBHelper.deleteReview(review.id);
+    const reviewsContainer = document.getElementById("reviews-container");
+    reviewsContainer.innerHTML = "";
+    fetchReviewsFromURL()
   }
   li.appendChild(deleteButton);
 
@@ -257,6 +261,9 @@ createReviewForm = (reviews, id) => {
   submitReviewButton.value ="Submit Review";
   submitReviewButton.id="submit-button";
   submitReviewButton.type = "submit";
+  submitReviewButton.onclick = () => {
+    fetchReviewsFromURL()
+  }
 
   form.appendChild(submitReviewButton);
   return form;
