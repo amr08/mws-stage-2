@@ -90,8 +90,11 @@ class DBHelper {
   }
 
   static postReviews(review, id){
-    review.id = id
-    console.log(review);
+    const randomNum = Math.floor(Math.random() * Math.floor(20))
+
+    // review.id = id
+    review.id = 30 + randomNum;
+
  
     //Send to IDB so user can read data while offline
      dbPromise.then(db => {
@@ -101,8 +104,28 @@ class DBHelper {
       return tx.complete;
      }).then(() => {
       console.log("added locally!");
-       DBHelper.fetchReviews(`reviews/?restaurant_id=${review.restaurant_id}`)
+       DBHelper.fetchReviews(`reviews/?restaurant_id=${review.restaurant_id}`);
      })
+  }
+
+  static deleteReview(id){
+    fetch(`http://localhost:1337/reviews/${id}`, {
+        method: 'delete'
+      }).then(response =>
+        response.json().then(json => {
+        return json;
+      })
+    );
+     dbPromise.then(db => {
+      const tx = db.transaction("reviews", "readwrite");
+      const keyValStore = tx.objectStore("reviews");
+        keyValStore.delete(id);
+        return tx.complete;
+      }).then(() => {
+        // DBHelper.readDb(callback, "reviews");
+      });
+
+    
   }
 
 
@@ -248,13 +271,4 @@ class DBHelper {
 
 }
 
-
-//DELETE
-  // fetch(`http://localhost:1337/reviews/33`, {
-  //   method: 'delete'
-  // }).then(response =>
-  //   response.json().then(json => {
-  //     return json;
-  //   })
-  // );
 

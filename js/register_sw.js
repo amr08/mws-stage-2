@@ -4,22 +4,8 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('../sw.js')
       .then(registration => {
         if("sync" in registration){
-          // console.log("yas");
-          // console.log(registration)
-          // const reviewButton = document.getElementById("review-button");
-          // console.log(reviewButton)
-          // if(reviewButton.onclick){
-          //   console.log(true)
-
+          //Listen for changes to form in order to track submit button then send sync message to sw
           observer(registration);
-          // }
-          // const submitButton = document.getElementById("submit-button");
-          // console.log(submitButton)
-          // submitButton.onclick = () => {
-          //   console.log("cool");
-          // }
-          
-          // console.log("yas");
         }
         registration.onupdatefound = () => {
           const installingWorker = registration.installing;
@@ -108,8 +94,7 @@ function observer(registration){
                     registration.sync.register(JSON.stringify(postReview));
                     return;
                });
-            }
-             
+            } 
           }
           else if (mutation.type == 'attributes') {
               console.log('The ' + mutation.attributeName + ' attribute was modified.');
@@ -117,8 +102,12 @@ function observer(registration){
       }
     };
 
+
+ 
+
     const observer = new MutationObserver(callback);
     observer.observe(targetNode, config);
 
   }
 }
+

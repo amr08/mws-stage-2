@@ -75,8 +75,8 @@ self.addEventListener('fetch', event => {
 });
 
 self.addEventListener('sync', event => {
-  console.log(event.tag)
   event.waitUntil(
+
     fetch("http://localhost:1337/reviews/", {
        method: 'POST',
        body: event.tag,
@@ -86,7 +86,7 @@ self.addEventListener('sync', event => {
      }).then(function(response) {  
        return response;
      }).then(function(data) {
-      console.log("Posted once online");
+      console.log("Posted once back online!");
     }).catch(function(err) { console.error(err); })
   );
 });
@@ -108,7 +108,6 @@ function serveRestaurantHtml(request) {
 
 function servePhotos(request) {
   const storageUrl = request.url.replace(/-\d+px\.jpg$/, '');
- console.log(request.url)
   return caches.open(CACHE_IMGS_NAME).then(cache => {
     return cache.match(storageUrl).then(response => {
       if(response) return response; 

@@ -160,9 +160,9 @@ fillReviewsHTML = (reviews = self.reviews, id = self.restaurant.id) => {
  * Create review HTML and add it to the webpage.
  */
 createReviewHTML = (review) => {
-  console.log(review)
   const li = document.createElement('li');
   const name = document.createElement('h3');
+  const deleteButton = document.createElement("button");
   name.innerHTML = review.name;
   li.appendChild(name);
 
@@ -177,6 +177,15 @@ createReviewHTML = (review) => {
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
   li.appendChild(comments);
+
+  deleteButton.innerHTML = "Delete";
+  deleteButton.value = review.id;
+  deleteButton.id="delete-button";
+  deleteButton.type = "button";
+  deleteButton.onclick = () => {
+    DBHelper.deleteReview(review.id);
+  }
+  li.appendChild(deleteButton);
 
   return li;
 }
