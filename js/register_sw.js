@@ -3,7 +3,10 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     navigator.serviceWorker.register('../sw.js')
       .then(registration => {
+      
         if("sync" in registration){
+          console.log(registration)
+
      
           //Listen for changes to form in order to track submit button then send sync message to sw
           observer(registration);
@@ -82,7 +85,7 @@ function observer(registration){
                   const idValue = document.getElementById("id")
                   const commentsValue = document.getElementById("comments");
                   const ratingValue = document.getElementById("rating");
-                  console.log(idValue)
+              
                   const postReview = 
                     {
                       "restaurant_id": parseInt(idValue.dataset.restaurant), 
@@ -90,6 +93,7 @@ function observer(registration){
                       "rating":  parseInt(ratingValue.options[ratingValue.selectedIndex].value),
                       "comments": commentsValue.value
                     }
+                    console.log(postReview)
 
                     DBHelper.postReviews(postReview, parseInt(idValue.value));
                     registration.sync.register(JSON.stringify(postReview));
@@ -113,4 +117,48 @@ function observer(registration){
 
   }
 }
+
+// window.addEventListener('load', function() {
+  // var status = document.getElementById("status");
+  // var log = document.getElementById("log");
+
+  function updateOnlineStatus(event) {
+    // var condition = navigator.onLine ? "online" : "offline";
+    if(event.type === "offline"){
+      const body = document.getElementsByTagName("body")[0];
+      const toastDiv = document.createElement("div");
+      toastDiv.classList.add("toast");
+      toastDiv.innerHTML = "You are operating offline";
+      toastDiv.setAttribute("id", "toast");
+      toastDiv.setAttribute("aria-label", "service-worker-update-offline")
+
+      const dismissButton = document.createElement("button");
+      toastDiv.appendChild(dismissButton);
+
+      dismissButton.classList.add("button-toast");
+      dismissButton.innerHTML = "Dismiss";
+      dismissButton.setAttribute("tabindex", "1");
+      dismissButton.onclick = () => {
+        const getToastDiv = document.getElementById("toast"); 
+        getToastDiv.parentNode.removeChild(getToastDiv);
+      }
+
+      body.appendChild(toastDiv);
+    } else {
+      if(document.getElementById("toast")){
+        const getToastDiv = document.getElementById("toast"); 
+        getToastDiv.parentNode.removeChild(getToastDiv);
+
+      }
+    }
+    // status.className = condition;
+    // status.innerHTML = condition.toUpperCase();
+
+    // log.insertAdjacentHTML("beforeend", "Event: " + event.type + "; Status: " + condition);
+  }
+
+  window.addEventListener('online',  updateOnlineStatus);
+  window.addEventListener('offline', updateOnlineStatus);
+// });
+
 

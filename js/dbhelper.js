@@ -26,8 +26,10 @@ class DBHelper {
      fetch(`${DBHelper.DATABASE_URL}${path}`)
      .then(res => res.json(),
 
-      error => console.log("An error has occured.", error)
-      ).then(data => {
+      error => {
+        console.log("An error has occured.", error)
+        DBHelper.readDb(callback, store);
+      }).then(data => {
         DBHelper.sendToDb(data, callback, store);
       }).catch(err => {
         // eslint-disable-next-line

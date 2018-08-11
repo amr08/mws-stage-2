@@ -476,7 +476,7 @@ nav h1 a {
   font-size: 20px;
   color: white;
   background-color: rgba(72, 209, 204, .9);
-  z-index: 99;
+  z-index: 1000;
   position: fixed;
   top: 10px;
   left: 0;

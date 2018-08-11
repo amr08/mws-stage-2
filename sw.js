@@ -69,12 +69,14 @@ self.addEventListener('fetch', event => {
       response || fetch(event.request)
     )).catch(error => {
       console.log("ERROR", error);
+      notifyUserOffline();
       return caches.match('/404.html');
     })
   );
 });
 
 self.addEventListener('sync', event => {
+  console.log(event)
   event.waitUntil(
 
     fetch("http://localhost:1337/reviews/", {
@@ -122,10 +124,36 @@ function servePhotos(request) {
   });
 }
 
+function notifyUserOffline(){
+  console.log("offline")
+  // const body = document.getElementsByTagName("body")[0];
+  // console.log(body)
+  // const toastDiv = document.createElement("div");
+  // toastDiv.classList.add("toast");
+  // toastDiv.innerHTML = "You are currently offline";
+  // toastDiv.setAttribute("id", "toast");
+  // toastDiv.setAttribute("aria-label", "offline-toast-notification")
+
+  // const dismissButton = document.createElement("button");
+
+  // dismissButton.classList.add("button-toast");
+  // dismissButton.innerHTML = "Dismiss";
+  // dismissButton.setAttribute("tabindex", "1");
+  // dismissButton.onclick = () => {
+  //   const getToastDiv = document.getElementById("toast");
+  //   getToastDiv.parentNode.removeChild(getToastDiv);
+  // }
+
+  // toastDiv.appendChild(dismissButton);
+
+  // body.appendChild(toastDiv);
+}
+
 
 self.addEventListener('message', event => {
   if (event.data.update) {
     self.skipWaiting();
   }
 });
+
 
