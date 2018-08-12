@@ -267,7 +267,7 @@ nav h1 a {
 }
 
 
-#restaurants-list p {
+#restaurants-list .restaurant-info {
   margin: 0;
   font-size: 11pt;
 }
@@ -488,6 +488,22 @@ nav h1 a {
   margin: 5px;
   border-radius: 5px;
   background-color: #FA8072;
+}
+
+/*HEART*/
+
+.favorite-heart {
+  font-size: 50px;
+  cursor: pointer;
+  color: lightgrey;
+}
+
+.favorite-heart:hover {
+  color: pink;
+}
+
+.liked {
+  color: #B22222;
 }
 
 

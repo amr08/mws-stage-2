@@ -5,9 +5,20 @@ if ('serviceWorker' in navigator) {
       .then(registration => {
       
         if("sync" in registration){
-          console.log(registration)
+            const heart = document.getElementsByClassName("favorite-heart");
+            console.log(heart)
+            for(var i = 0; i < heart.length; i++){
+              heart[i].addEventListener("click", function(e){
+                this.classList.toggle("liked")
+                if(this.classList.contains("liked")){
+                  registration.sync.register(`{"restaurant_id": ${e.target.id}, "is_favorite": true, "heart": true}`);
+                } else {
+                  registration.sync.register(`{"restaurant_id": ${e.target.id}, "is_favorite": false, "heart": true}`);
+                }
+              
+              });
+            }
 
-     
           //Listen for changes to form in order to track submit button then send sync message to sw
           observer(registration);
         }
@@ -93,7 +104,6 @@ function observer(registration){
                       "rating":  parseInt(ratingValue.options[ratingValue.selectedIndex].value),
                       "comments": commentsValue.value
                     }
-                    console.log(postReview)
 
                     DBHelper.postReviews(postReview, parseInt(idValue.value));
                     registration.sync.register(JSON.stringify(postReview));
@@ -118,12 +128,8 @@ function observer(registration){
   }
 }
 
-// window.addEventListener('load', function() {
-  // var status = document.getElementById("status");
-  // var log = document.getElementById("log");
 
   function updateOnlineStatus(event) {
-    // var condition = navigator.onLine ? "online" : "offline";
     if(event.type === "offline"){
       const body = document.getElementsByTagName("body")[0];
       const toastDiv = document.createElement("div");
@@ -151,14 +157,9 @@ function observer(registration){
 
       }
     }
-    // status.className = condition;
-    // status.innerHTML = condition.toUpperCase();
-
-    // log.insertAdjacentHTML("beforeend", "Event: " + event.type + "; Status: " + condition);
   }
 
   window.addEventListener('online',  updateOnlineStatus);
   window.addEventListener('offline', updateOnlineStatus);
-// });
 
 

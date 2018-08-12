@@ -13,7 +13,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/maps/?source=pwa",
+  "start_url": "/",
   "background_color": "#fdfdfd",
   "display": "standalone",
   "scope": "/img/",

@@ -1,10 +1,10 @@
-
+/* eslint-disable */
 /**
  * Common database helper functions.
  */
 
 //Create DB
-// eslint-disable-next-line
+
 const dbPromise = idb.open("restaurant-data", 1, upgradeDB => {
   upgradeDB.createObjectStore("data", {
     keyPath: "id"
@@ -14,7 +14,7 @@ const dbPromise = idb.open("restaurant-data", 1, upgradeDB => {
   });
 });
 
-// eslint-disable-next-line
+
 class DBHelper {
   //Database URL
   static get DATABASE_URL() {
@@ -105,7 +105,7 @@ class DBHelper {
       keyValStore.put(review);
       return tx.complete;
      }).then(() => {
-      console.log("added locally!");
+      console.log("Content added locally");
        DBHelper.fetchReviews(`reviews/?restaurant_id=${review.restaurant_id}`);
      })
   }
@@ -123,7 +123,7 @@ class DBHelper {
             cursor.continue();
         }
       });
-      tx.complete.then(() => console.log("done"));
+      tx.complete.then(() => console.log("Review Deleted"));
     });
 
     fetch(`http://localhost:1337/reviews/${id}`, {
@@ -152,6 +152,19 @@ class DBHelper {
           callback("Restaurant does not exist", null);
         }
       }
+    });
+  }
+
+  static fetchFavorites(callback){
+    fetch(`${DBHelper.DATABASE_URL}restaurants/?is_favorite=true`)
+      .then(res => res.json(),
+      error => {
+        console.log("An error has occured.", error)
+      }).then(data => {
+          callback(data);
+      }).catch(err => {
+      // eslint-disable-next-line
+      console.log("error", err);
     });
   }
 

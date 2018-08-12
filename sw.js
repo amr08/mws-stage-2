@@ -1,3 +1,4 @@
+/* eslint-disable */
 const STATIC_CACHE_NAME = 'mws-static-v6';
 const CACHE_IMGS_NAME = 'restaurant-imgs';
 const allCaches = [
@@ -69,28 +70,44 @@ self.addEventListener('fetch', event => {
       response || fetch(event.request)
     )).catch(error => {
       console.log("ERROR", error);
-      notifyUserOffline();
       return caches.match('/404.html');
     })
   );
 });
 
 self.addEventListener('sync', event => {
-  console.log(event)
-  event.waitUntil(
 
-    fetch("http://localhost:1337/reviews/", {
-       method: 'POST',
-       body: event.tag,
-       headers: {
-         'Content-Type': 'application/json',
-       }
-     }).then(function(response) {  
-       return response;
-     }).then(function(data) {
-      console.log("Posted once back online!");
-    }).catch(function(err) { console.error(err); })
-  );
+  const favoriteRestaurant = JSON.parse(event.tag);
+  if(favoriteRestaurant.heart) {
+
+      event.waitUntil(
+        fetch(`http://localhost:1337/restaurants/${favoriteRestaurant.restaurant_id}/?is_favorite=${favoriteRestaurant.is_favorite}`, {
+           method: 'POST',
+           headers: {
+             'Content-Type': 'application/json',
+           }
+        }).then(function(response) {  
+           return response;
+        }).then(function(data) {
+          console.log("Back online! PUT was sent to DB!");
+        }).catch(function(err) { console.error(err); })
+
+      );
+    } else {
+      event.waitUntil(
+        fetch("http://localhost:1337/reviews/", {
+           method: 'POST',
+           body: event.tag,
+           headers: {
+             'Content-Type': 'application/json',
+           }
+         }).then(function(response) {  
+           return response;
+         }).then(function(data) {
+          console.log("Back online! POST was sent to DB!");
+        }).catch(function(err) { console.error(err); })
+      );
+  }
 });
 
 
@@ -122,31 +139,6 @@ function servePhotos(request) {
       console.log("Error in servePhotos", error)
     })
   });
-}
-
-function notifyUserOffline(){
-  console.log("offline")
-  // const body = document.getElementsByTagName("body")[0];
-  // console.log(body)
-  // const toastDiv = document.createElement("div");
-  // toastDiv.classList.add("toast");
-  // toastDiv.innerHTML = "You are currently offline";
-  // toastDiv.setAttribute("id", "toast");
-  // toastDiv.setAttribute("aria-label", "offline-toast-notification")
-
-  // const dismissButton = document.createElement("button");
-
-  // dismissButton.classList.add("button-toast");
-  // dismissButton.innerHTML = "Dismiss";
-  // dismissButton.setAttribute("tabindex", "1");
-  // dismissButton.onclick = () => {
-  //   const getToastDiv = document.getElementById("toast");
-  //   getToastDiv.parentNode.removeChild(getToastDiv);
-  // }
-
-  // toastDiv.appendChild(dismissButton);
-
-  // body.appendChild(toastDiv);
 }
 
 

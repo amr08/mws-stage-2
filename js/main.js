@@ -9,32 +9,6 @@ var url = `https://maps.googleapis.com/maps/api/js?&libraries=places&key=${mykey
 document.getElementById("google-maps").src = url;
 
 
-// document.addEventListener("DOMContentLoaded", function() {
-//   var lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
-//   console.log(lazyImages)
-
-//   if ("IntersectionObserver" in window) {
-//     let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
-//       entries.forEach(function(entry) {
-//         if (entry.isIntersecting) {
-//           let lazyImage = entry.target;
-//           lazyImage.src = lazyImage.dataset.src;
-//           lazyImage.srcset = lazyImage.dataset.srcset;
-//           lazyImage.classList.remove("lazy");
-//           lazyImageObserver.unobserve(lazyImage);
-//         }
-//       });
-//     });
-
-//     lazyImages.forEach(function(lazyImage) {
-//       lazyImageObserver.observe(lazyImage);
-//     });
-//   } else {
-//     console.log("WHAT?")
-//     // Possibly fall back to a more compatible method here
-//   }
-// });
-
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
@@ -162,6 +136,8 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
     ul.append(createRestaurantHTML(restaurant));
   });
   addMarkersToMap();
+  addLikes();
+
 }
 
 /**
@@ -184,10 +160,12 @@ createRestaurantHTML = (restaurant) => {
   li.append(name);
 
   const neighborhood = document.createElement('p');
+  neighborhood.class="restaurant-info";
   neighborhood.innerHTML = restaurant.neighborhood;
   li.append(neighborhood);
 
   const address = document.createElement('p');
+  address.class="restaurant-info"
   address.innerHTML = restaurant.address;
   li.append(address);
 
@@ -199,6 +177,15 @@ createRestaurantHTML = (restaurant) => {
     location.href = DBHelper.urlForRestaurant(restaurant);
   }
   li.append(viewMoreButton);
+
+  const favoriteHeart = document.createElement("p");
+  const span = document.createElement("span");
+  span.innerHTML = "♥"
+  span.setAttribute("class", "favorite-heart");
+  span.id=restaurant.id;
+
+  favoriteHeart.append(span);
+  li.append(favoriteHeart);
 
   return li
 }
@@ -216,3 +203,15 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 }
+
+addLikes = () => {
+  DBHelper.fetchFavorites(data => {
+    if(data){
+      data.filter(function(result){
+        const getHeart = document.getElementById(result.id);
+        getHeart.classList.add("liked");    
+      });
+    }  
+  });
+}
+
