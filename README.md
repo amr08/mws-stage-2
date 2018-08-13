@@ -4,7 +4,7 @@
 #### _Three Stage Course Material Project - Restaurant Reviews_
 
 
-## Final Performance Audit
+## Final Lighthouse Audit
 
 ![performance-audit](img/perfAudit.jpg)
 
