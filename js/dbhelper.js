@@ -127,6 +127,15 @@ class DBHelper {
       tx.complete.then(() => console.log("Review Deleted"));
     });
 
+    //  dbPromise.then(function(db) {
+    //   var tx = db.transaction('reviews', 'readwrite');
+    //   var store = tx.objectStore('reviews');
+    //   store.delete(id);
+    //   return tx.complete;
+    // }).then(function() {
+    //   console.log('Item deleted');
+    // });
+
     fetch(`http://localhost:1337/reviews/${id}`, {
         method: 'delete'
       }).then(response =>

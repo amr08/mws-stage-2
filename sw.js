@@ -104,7 +104,7 @@ self.addEventListener('sync', event => {
          }).then(function(response) {  
            return response;
          }).then(function(data) {
-          console.log("Back online! POST was sent to DB!");
+          console.log("POST was sent to DB!");
         }).catch(function(err) { console.error(err); })
       );
   }

@@ -37,7 +37,7 @@ button {
   margin-top: 20px;
   padding: 10px;
   color: white;
-  background-color: #008080;
+  background-color: #20B2AA;
   border-radius: 5px;
   cursor: pointer;
   font-size: 20px;
@@ -50,7 +50,7 @@ button:hover {
 
 a:hover, 
 a:focus {
-  color: #3397db;
+  color: #00CDCD;
   text-decoration: none;
 }
 
@@ -163,14 +163,13 @@ nav h1 a {
 
 /* Add a color to all links inside the list */
 #breadcrumb li a {
-  color: #2F4F4F;
+  color: #464646;
   text-decoration: none;
 }
 
 /* Add a color on mouse-over */
 #breadcrumb li a:hover {
-  color: #01447e;
-  text-decoration: underline;
+  color: #EE6A50;
 }
 
 
@@ -185,7 +184,7 @@ nav h1 a {
 /* ====================== Restaurant Filtering ====================== */
 .filter-options {
   display: flex;
-  background-color: #2F4F4F;
+  background-color: #252831;
   align-items: center;
 }
 
@@ -213,7 +212,7 @@ nav h1 a {
 
 .filter-options select:focus {
   outline: 0;
-  box-shadow: 0 0 8px 3px hotpink;
+  box-shadow: 0 0 8px 3px #fcb620;
 }
 
 .off-screen {
@@ -318,7 +317,7 @@ nav h1 a {
 
 
 #restaurant-name {
-  color: #008080;
+  color: #252831;
   font-family: Arial,sans-serif;
   font-size: 20pt;
   font-weight: 200;
@@ -398,7 +397,7 @@ nav h1 a {
 #reviews-form form{
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 50%;
   box-shadow: 0 0 5px grey;
   border-radius: 5px;
   padding: 25px;
@@ -422,7 +421,7 @@ nav h1 a {
 
 
 #reviews-container h2 {
-  color: #008080;
+  color: #464646;
   font-size: 24pt;
   font-weight: 300;
   letter-spacing: -1px;
@@ -452,6 +451,7 @@ nav h1 a {
 #reviews-list li p {
   margin: 0 0 10px;
   padding: 5px;
+  font-size: 16px;
 }
 
 #reviews-list li h3 {
@@ -459,6 +459,7 @@ nav h1 a {
  color: white;
  padding: 15px;
  margin: 0;
+ font-size: 20px;
 }
 
 
@@ -475,19 +476,24 @@ nav h1 a {
   padding: 5px;
   font-size: 20px;
   color: white;
-  background-color: rgba(72, 209, 204, .9);
+  background-color: rgba(17,214, 214, .9);
   z-index: 1000;
   position: fixed;
   top: 10px;
   left: 0;
   text-align: center;
+  border-radius: 5px;
 }
 
 .button-toast {
   padding: 5px;
   margin: 5px;
   border-radius: 5px;
-  background-color: #FA8072;
+  background-color: #838c8c;
+}
+
+.button-toast:hover {
+  background-color: orange;
 }
 
 /*HEART*/
