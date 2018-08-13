@@ -282,23 +282,7 @@ class DBHelper {
       : (`/dist/images/${restaurant.id}`);
   }
 
-//   /**
-//    * Map marker for a restaurant.
-//    */
-//   /* eslint-disable */
-//   static mapMarkerForRestaurant(restaurant, map) {
-//     const marker = new google.maps.Marker({
-//       position: restaurant.latlng,
-//       title: restaurant.name,
-//       url: DBHelper.urlForRestaurant(restaurant),
-//       map: map,
-//       animation: google.maps.Animation.DROP}
-//     );
-//     return marker;
-//   }
 
-
-// }
 
   /**
    * Map marker for a restaurant.

@@ -4,10 +4,6 @@ let restaurants,
   cuisines;
 var map;
 var markers = [];
-// var mykey = config.MY_API_KEY;
-// var url = `https://maps.googleapis.com/maps/api/js?&libraries=places&key=${mykey}&callback=initMap`;
-// document.getElementById("google-maps").src = url;
-
 
 
 /**
@@ -74,21 +70,6 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
   });
 }
 
-/**
- * Initialize Google map, called from HTML.
- */
-// window.initMap = () => {
-//   let loc = {
-//     lat: 40.722216,
-//     lng: -73.987501
-//   };
-//   self.map = new google.maps.Map(document.getElementById('map'), {
-//     zoom: 12,
-//     center: loc,
-//     scrollwheel: false
-//   });
-//   updateRestaurants();
-// }
 
 /**
  * Initialize leaflet map, called from HTML.
@@ -137,17 +118,7 @@ updateRestaurants = () => {
 /**
  * Clear current restaurants, their HTML and remove their map markers.
  */
-// resetRestaurants = (restaurants) => {
-//   // Remove all restaurants
-//   self.restaurants = [];
-//   const ul = document.getElementById('restaurants-list');
-//   ul.innerHTML = '';
 
-//   // Remove all map markers
-//   self.markers.forEach(m => m.setMap(null));
-//   self.markers = [];
-//   self.restaurants = restaurants;
-// }
 
 resetRestaurants = (restaurants) => {
   // Remove all restaurants
@@ -227,20 +198,6 @@ createRestaurantHTML = (restaurant) => {
 
   return li
 }
-
-// /**
-//  * Add markers for current restaurants to the map.
-//  */
-// addMarkersToMap = (restaurants = self.restaurants) => {
-//   restaurants.forEach(restaurant => {
-//     // Add marker to the map
-//     const marker = DBHelper.mapMarkerForRestaurant(restaurant, self.map);
-//     google.maps.event.addListener(marker, 'click', () => {
-//       window.location.href = marker.url;
-//     });
-//     self.markers.push(marker);
-//   });
-// }
 
 /**
  * Add markers for current restaurants to the map.
