@@ -37,7 +37,7 @@ button {
   margin-top: 20px;
   padding: 10px;
   color: white;
-  background-color: #20B2AA;
+  background-color: #047E8B;
   border-radius: 5px;
   cursor: pointer;
   font-size: 20px;
@@ -501,7 +501,7 @@ nav h1 a {
 .favorite-heart {
   font-size: 50px;
   cursor: pointer;
-  color: lightgrey;
+  color: #787F81;
 }
 
 .favorite-heart:hover {
