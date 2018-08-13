@@ -14,7 +14,7 @@
 
 ### API Server
 
-* follow instructions located here: https://github.com/udacity/mws-restaurant-stage-2
+* follow instructions located here: https://github.com/amr08/mws-restaurant-stage-3
 
 
 ### App
