@@ -19,7 +19,7 @@
 
 ### App
 
-* clone repo: `$ git clone git@github.com:amr08/mws-stage-2.git`
+* clone repo: `$ git clone git@github.com:amr08/mws-stage-3.git`
 * cd into the project directory
 * run `$ npm install`
 * run `$ npm start`
