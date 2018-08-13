@@ -506,6 +506,12 @@ nav h1 a {
   color: #B22222;
 }
 
+/*DELETE BUTTON */
+
+.delete-button {
+  margin-bottom: 15px;
+}
+
 
 @media screen and (max-width: 799px){
   body {

@@ -135,7 +135,7 @@ fillReviewsHTML = (reviews = self.reviews, id = self.restaurant.id) => {
   });
   container.appendChild(ul);
 
-  reviewsFormDiv.setAttribute("id", "reviews-form");
+  reviewsFormDiv.id = "reviews-form";
   title.innerHTML = 'Reviews';
   reviewsButton.innerHTML = "Add Review";
   reviewsButton.value ="Add Review";
@@ -197,14 +197,15 @@ createReviewHTML = (review) => {
 //Create form
 createReviewForm = (reviews, id) => {
   const form = document.createElement("form");
-  form.setAttribute("id", "submit-review-form");
+  form.id = "submit-review-form";
   const inputName = document.createElement('input');
   const labelName = document.createElement("label");
   labelName.innerHTML = "Name";
   labelName.classList.add("off-screen");
-  inputName.setAttribute("placeholder", "Name");
-  inputName.setAttribute("id", "name");
-  inputName.setAttribute("name", "name");
+  inputName.placeholder = "Name";
+  inputName.id = "name";
+  inputName.setAttribute("required", "");
+  inputName.name = "name";
   form.appendChild(labelName);
   form.appendChild(inputName);
 
@@ -214,16 +215,16 @@ createReviewForm = (reviews, id) => {
   labelID.classList.add("off-screen");
   inputID.setAttribute("value", reviews.length + 1);
   inputID.dataset.restaurant = id;
-  inputID.setAttribute("placeholder", "Restaurant Id");
-  inputID.setAttribute("type", "hidden");
+  inputID.placeholder = "Restaurant Id";
+  inputID.type = "hidden";
   inputID.setAttribute("disabled", "true");
-  inputID.setAttribute("name", "id");
-  inputID.setAttribute("id", "id");
+  inputID.name = "id";
+  inputID.id ="id";
   form.appendChild(labelID);
   form.appendChild(inputID);
 
   const selectRating = document.createElement('select');
-  selectRating.setAttribute("id", "rating");
+  selectRating.id = "rating";
   const labelRating = document.createElement("label");
   labelRating.innerHTML = "Rating";
   // labelRating.classList.add("off-screen");
@@ -248,11 +249,12 @@ createReviewForm = (reviews, id) => {
   const commentsLabel = document.createElement("label");
   commentsLabel.innerHTML = "Comments";
   commentsLabel.classList.add("off-screen");
-  commentsInput.setAttribute("placeholder", "Add your comments");
-  commentsInput.setAttribute("name", "comments");
-  commentsInput.setAttribute("id", "comments");
-  commentsInput.setAttribute("maxlength", "500");
-  commentsInput.setAttribute("rows", "3");
+  commentsInput.placeholder = "Add your comments";
+  commentsInput.name = "comments";
+  commentsInput.setAttribute("required", "");
+  commentsInput.id = "comments";
+  commentsInput.maxlength = "500";
+  commentsInput.rows = "3";
   form.appendChild(commentsLabel);
   form.appendChild(commentsInput);
 

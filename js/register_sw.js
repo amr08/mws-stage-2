@@ -6,7 +6,6 @@ if ('serviceWorker' in navigator) {
       
         if("sync" in registration){
             const heart = document.getElementsByClassName("favorite-heart");
-            console.log(heart)
             for(var i = 0; i < heart.length; i++){
               heart[i].addEventListener("click", function(e){
                 this.classList.toggle("liked")

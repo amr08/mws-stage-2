@@ -118,6 +118,7 @@ class DBHelper {
         if (!cursor) return;
 
         if(cursor.value.id === id){
+          console.log(cursor.value.id === id)
             cursor.delete();
         } else {
             cursor.continue();
