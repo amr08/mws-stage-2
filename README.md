@@ -3,10 +3,11 @@
 
 #### _Three Stage Course Material Project - Restaurant Reviews_
 
-##Final Performance Audit
+```
+## Final Performance Audit
 
 ![performance-audit](img/perfAudit.jpg)
-
+```
 ## Quick start
 
 ### API Server
